@@ -633,6 +633,7 @@ EOF'
     pct exec "$CTID" -- ash -c "apk update >/dev/null"
     pct exec "$CTID" -- ash -c "apk upgrade >/dev/null"
     pct exec "$CTID" -- ash -c "apk add bash mc nano >/dev/null"
+    pct exec "$CTID" -- ash -c "sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd"
     pct reboot "$CTID"
   fi
   lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://raw.githubusercontent.com/tteck/Proxmox/main/install/$var_install.sh)" || exit
