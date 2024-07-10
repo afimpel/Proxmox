@@ -558,7 +558,7 @@ build_container() {
   export PCT_OPTIONS="
     -features $FEATURES
     -hostname $HN
-    -tags proxmox-helper-scripts
+    -tags proxmox-helper-scripts,afimpel
     $SD
     $NS
     -net0 name=eth0,bridge=$BRG$MAC,ip=$NET$GATE$VLAN$MTU
@@ -633,6 +633,7 @@ EOF'
     pct exec "$CTID" -- ash -c "apk update >/dev/null"
     pct exec "$CTID" -- ash -c "apk upgrade >/dev/null"
     pct exec "$CTID" -- ash -c "apk add bash mc nano >/dev/null"
+    pct reboot "$CTID"
   fi
   lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://raw.githubusercontent.com/tteck/Proxmox/main/install/$var_install.sh)" || exit
 
