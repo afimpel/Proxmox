@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
+source <(curl -s https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/build.func)
 # Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
@@ -19,7 +19,7 @@ EOF
 }
 header_info
 echo -e "Loading..."
-APP="Alpine-Edge-Docker"
+APP="Alpine Edge Docker"
 var_disk="2"
 var_cpu="1"
 var_ram="1024"
@@ -31,7 +31,7 @@ catch_errors
 
 function default_settings() {
   CT_TYPE="1"
-  PW=""
+  PW="-password docker"
   CT_ID=$NEXTID
   HN=$NSAPP
   DISK_SIZE="$var_disk"
@@ -70,11 +70,6 @@ function update_script() {
     header_info
     case $CHOICE in
     1)
-      url=$(more /etc/apk/repositories | grep http | grep -v '^#' | head -n 1)
-      repositories_url="${url%/*/*}"
-      echo "${repositories_url}/edge/main" > /etc/apk/repositories
-      echo "${repositories_url}/edge/community" >> /etc/apk/repositories
-      echo "${repositories_url}/edge/testing" >> /etc/apk/repositories
       apk update && apk upgrade
       exit
       ;;

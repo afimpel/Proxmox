@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
+source <(curl -s https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/build.func)
 # Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
@@ -14,12 +14,12 @@ cat <<"EOF"
  / ___ |/ / /_/ / / / / /  __/
 /_/  |_/_/ .___/_/_/ /_/\___/ 
         /_/                   
-
+Edge
 EOF
 }
 header_info
 echo -e "Loading..."
-APP="Alpine-Edge"
+APP="Alpine Edge"
 var_disk="0.1"
 var_cpu="1"
 var_ram="512"
@@ -60,13 +60,6 @@ UPD=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "SUPPORT" --radio
 
 header_info
 if [ "$UPD" == "1" ]; then
-cp /etc/apk/repositories /etc/apk/repositories_old
-url=$(more /etc/apk/repositories | grep http | grep -v '^#' | head -n 1)
-repositories_url="${url%/*/*}"
-echo "${repositories_url}/edge/main" > /etc/apk/repositories
-echo "${repositories_url}/edge/community" >> /etc/apk/repositories
-echo "${repositories_url}/edge/testing" >> /etc/apk/repositories
-
 apk update && apk upgrade
 exit;
 fi

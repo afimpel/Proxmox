@@ -626,12 +626,11 @@ EOF
   if [ "$var_os" == "alpine" ]; then
     sleep 3
         pct exec "$CTID" -- /bin/sh -c 'cat <<EOF >/etc/apk/repositories
-http://dl-cdn.alpinelinux.org/alpine/latest-stable/main
-http://dl-cdn.alpinelinux.org/alpine/latest-stable/community
-#http://dl-cdn.alpinelinux.org/alpine/v3.19/main
-#http://dl-cdn.alpinelinux.org/alpine/v3.19/community
+http://dl-cdn.alpinelinux.org/alpine/edge/main
+http://dl-cdn.alpinelinux.org/alpine/edge/community
+http://dl-cdn.alpinelinux.org/alpine/edge/testing
 EOF'
-    pct exec "$CTID" -- ash -c "apk add bash >/dev/null"
+    pct exec "$CTID" -- ash -c "apk update & apk upgrade & apk add bash mc nano >/dev/null"
   fi
   lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://raw.githubusercontent.com/tteck/Proxmox/main/install/$var_install.sh)" || exit
 
