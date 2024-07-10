@@ -19,10 +19,10 @@ EOF
 }
 header_info
 echo -e "Loading..."
-APP="Alpine Edge"
-var_disk="0.1"
+APP="Alpine-Edge"
+var_disk="8"
 var_cpu="1"
-var_ram="512"
+var_ram="2048"
 var_os="alpine"
 var_version="3.19"
 variables

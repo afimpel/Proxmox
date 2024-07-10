@@ -19,10 +19,10 @@ EOF
 }
 header_info
 echo -e "Loading..."
-APP="Alpine Edge Docker"
-var_disk="2"
-var_cpu="1"
-var_ram="1024"
+APP="Alpine-Edge-Docker"
+var_disk="16"
+var_cpu="2"
+var_ram="2048"
 var_os="alpine"
 var_version="3.19"
 variables
