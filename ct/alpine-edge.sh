@@ -60,6 +60,13 @@ UPD=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "SUPPORT" --radio
 
 header_info
 if [ "$UPD" == "1" ]; then
+cp /etc/apk/repositories /etc/apk/repositories_old
+url=$(more /etc/apk/repositories | grep http | grep -v '^#' | head -n 1)
+repositories_url="${url%/*/*}"
+echo "${repositories_url}/edge/main" > /etc/apk/repositories
+echo "${repositories_url}/edge/community" >> /etc/apk/repositories
+echo "${repositories_url}/edge/testing" >> /etc/apk/repositories
+
 apk update && apk upgrade
 exit;
 fi
