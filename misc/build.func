@@ -558,7 +558,7 @@ build_container() {
   export PCT_OPTIONS="
     -features $FEATURES
     -hostname $HN
-    -tags proxmox-helper-scripts,afimpel
+    -tags proxmox-helper-scripts,afimpelelnerd
     $SD
     $NS
     -net0 name=eth0,bridge=$BRG$MAC,ip=$NET$GATE$VLAN$MTU
@@ -642,11 +642,10 @@ EOF'
 # This function sets the description of the container.
 description() {
   IP=$(pct exec "$CTID" ip a s dev eth0 | awk '/inet / {print $2}' | cut -d/ -f1)
-  pct set "$CTID" -description "<div align='center'><a href='https://Helper-Scripts.com' target='_blank' rel='noopener noreferrer'><img src='https://raw.githubusercontent.com/tteck/Proxmox/main/misc/images/logo-81x112.png'/></a>
+  pct set "$CTID" -description "<div align='center'><a href='https://nerd.afimpel.com' target='_blank' rel='noopener noreferrer'><img src='https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/images/afimpelelnerd.png'/></a>
 
   # ${APP} LXC
 
-  <a href='https://ko-fi.com/proxmoxhelperscripts'><img src='https://img.shields.io/badge/&#x2615;-Buy me a coffee-blue' /></a>
   </div>"
   if [[ -f /etc/systemd/system/ping-instances.service ]]; then
     systemctl start ping-instances.service
