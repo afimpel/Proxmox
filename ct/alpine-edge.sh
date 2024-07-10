@@ -20,6 +20,7 @@ EOF
 header_info
 echo -e "Loading..."
 APP="Alpine-Edge"
+var_install="alpine"
 var_disk="8"
 var_cpu="1"
 var_ram="2048"
