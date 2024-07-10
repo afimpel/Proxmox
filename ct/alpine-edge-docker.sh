@@ -24,7 +24,7 @@ var_disk="2"
 var_cpu="1"
 var_ram="1024"
 var_os="alpine"
-var_version="edge"
+var_version="3.19"
 variables
 color
 catch_errors
@@ -70,6 +70,11 @@ function update_script() {
     header_info
     case $CHOICE in
     1)
+      url=$(more /etc/apk/repositories | grep http | grep -v '^#' | head -n 1)
+      repositories_url="${url%/*/*}"
+      echo "${repositories_url}/edge/main" > /etc/apk/repositories
+      echo "${repositories_url}/edge/community" >> /etc/apk/repositories
+      echo "${repositories_url}/edge/testing" >> /etc/apk/repositories
       apk update && apk upgrade
       exit
       ;;
