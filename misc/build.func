@@ -659,7 +659,10 @@ upgrade-system-reboot
 # This function sets the description of the container.
 description() {
   IP=$(pct exec "$CTID" ip a s dev eth0 | awk '/inet / {print $2}' | cut -d/ -f1)
-  pct set "$CTID" -description "<div align='center'><a href='https://nerd.afimpel.com' target='_blank' rel='noopener noreferrer'><img src='https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/images/afimpelelnerd.png'/></a>
+  pct set "$CTID" -description "<div align='center'>
+  Revision code: $revision_code
+  
+  <a href='https://nerd.afimpel.com' target='_blank' rel='noopener noreferrer'><img src='https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/images/afimpelelnerd.png'/></a>
 
   # ${APP} LXC
   ${extraData}
