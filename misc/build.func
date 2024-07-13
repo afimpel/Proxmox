@@ -1,3 +1,5 @@
+revision_code="20240713-8.1"
+extraData=""  
 variables() {
   NSAPP=$(echo ${APP,,} | tr -d ' ')               # This function sets the NSAPP variable by converting the value of the APP variable to lowercase and removing any spaces.
   var_install="${var_install:-$NSAPP}-install"     # sets the var_install variable by appending "-install" to the value of NSAPP.
@@ -504,6 +506,7 @@ install_script() {
 }
 
 start() {
+  echo -e "${DGN}Revision code: ${BGN}$revision_code${CL}"
   if command -v pveversion >/dev/null 2>&1; then
     if ! (whiptail --backtitle "Proxmox VE Helper Scripts" --title "${APP} LXC" --yesno "This will create a New ${APP} LXC. Proceed?" 10 58); then
       clear
@@ -627,7 +630,7 @@ EOF
   msg_ok "Started LXC Container"
   if [ "$var_os" == "alpine" ]; then
     sleep 3
-        pct exec "$CTID" -- /bin/sh -c 'cat <<EOF >/etc/apk/repositories
+    pct exec "$CTID" -- /bin/sh -c 'cat <<EOF >/etc/apk/repositories
 http://dl-cdn.alpinelinux.org/alpine/edge/main
 http://dl-cdn.alpinelinux.org/alpine/edge/community
 http://dl-cdn.alpinelinux.org/alpine/edge/testing
@@ -641,9 +644,14 @@ EOF'
     pct exec "$CTID" -- ash -c "mv /etc/profile.d/color_prompt.sh.disabled /etc/profile.d/color_prompt.sh"
     pct exec "$CTID" -- ash -c "sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd"
     pct exec "$CTID" -- ash -c "upgrade-system-reboot"
+    extraData='```sh
+upgrade-system
+upgrade-system-poweroff
+upgrade-system-reboot
+```'
 #    pct reboot "$CTID"
   fi
-  msg_info "exec: bash $var_install.sh"
+  echo -e "${DGN}pct exec: ${BGN}bash $var_install.sh${CL}"
   lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://raw.githubusercontent.com/tteck/Proxmox/main/install/$var_install.sh)" || exit
 
 }
@@ -654,7 +662,7 @@ description() {
   pct set "$CTID" -description "<div align='center'><a href='https://nerd.afimpel.com' target='_blank' rel='noopener noreferrer'><img src='https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/images/afimpelelnerd.png'/></a>
 
   # ${APP} LXC
-
+  ${extraData}
   </div>"
   if [[ -f /etc/systemd/system/ping-instances.service ]]; then
     systemctl start ping-instances.service
