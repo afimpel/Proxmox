@@ -590,7 +590,7 @@ EOF
   fi
 
   if [ "$CT_TYPE" == "0" ]; then
-    if [[ "$APP" == "Channels" || "$APP" == "Emby" || "$APP" == "Frigate" || "$APP" == "Jellyfin" || "$APP" == "Plex" || "$APP" == "Scrypted" || "$APP" == "Tdarr" || "$APP" == "Unmanic" ]]; then
+    if [[ "$APP" == "Channels" || "${APP,,}" == "alpine-edge" || "$APP" == "Emby" || "$APP" == "Frigate" || "$APP" == "Jellyfin" || "$APP" == "Plex" || "$APP" == "Scrypted" || "$APP" == "Tdarr" || "$APP" == "Unmanic" ]]; then
       cat <<EOF >>$LXC_CONFIG
 # VAAPI hardware transcoding
 lxc.cgroup2.devices.allow: c 226:0 rwm
@@ -602,7 +602,7 @@ lxc.mount.entry: /dev/dri/renderD128 dev/dri/renderD128 none bind,optional,creat
 EOF
     fi
   else
-    if [[ "$APP" == "Channels" || "$APP" == "Emby" || "$APP" == "Frigate" || "$APP" == "Jellyfin" || "$APP" == "Plex" || "$APP" == "Scrypted" || "$APP" == "Tdarr" || "$APP" == "Unmanic" ]]; then
+    if [[ "$APP" == "Channels" || "${APP,,}" == "alpine-edge" || "$APP" == "Emby" || "$APP" == "Frigate" || "$APP" == "Jellyfin" || "$APP" == "Plex" || "$APP" == "Scrypted" || "$APP" == "Tdarr" || "$APP" == "Unmanic" ]]; then
       if [[ -e "/dev/dri/renderD128" ]]; then
         if [[ -e "/dev/dri/card0" ]]; then
           cat <<EOF >>$LXC_CONFIG
@@ -632,11 +632,16 @@ http://dl-cdn.alpinelinux.org/alpine/edge/main
 http://dl-cdn.alpinelinux.org/alpine/edge/community
 http://dl-cdn.alpinelinux.org/alpine/edge/testing
 EOF'
-    pct exec "$CTID" -- ash -c "apk update >/dev/null"
-    pct exec "$CTID" -- ash -c "apk upgrade >/dev/null"
-    pct exec "$CTID" -- ash -c "apk add bash mc nano >/dev/null"
+    pct exec "$CTID" -- ash -c "apk update"
+    pct exec "$CTID" -- ash -c "apk upgrade"
+    pct exec "$CTID" -- ash -c "apk add --no-cache nano lsd git mc bash htop curl btop lsblk bash-completion lsb-release-minimal openssl jq fastfetch"
+    pct exec "$CTID" -- ash -c "wget --no-cache -O /usr/bin/upgrade-system https://raw.githubusercontent.com/afimpel/upgrade-system-alpine/main/upgrade-system && wget --no-cache -O /usr/bin/upgrade-system-poweroff https://raw.githubusercontent.com/afimpel/upgrade-system-alpine/main/upgrade-system-poweroff && wget --no-cache -O /usr/bin/upgrade-system-reboot https://raw.githubusercontent.com/afimpel/upgrade-system-alpine/main/upgrade-system-reboot"
+
+    pct exec "$CTID" -- ash -c "chmod 777 /usr/bin/upgrade-system* -R"
+    pct exec "$CTID" -- ash -c "mv /etc/profile.d/color_prompt.sh.disabled /etc/profile.d/color_prompt.sh"
     pct exec "$CTID" -- ash -c "sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd"
-    pct reboot "$CTID"
+    pct exec "$CTID" -- ash -c "upgrade-system-reboot"
+#    pct reboot "$CTID"
   fi
   msg_info "exec: bash $var_install.sh"
   lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://raw.githubusercontent.com/tteck/Proxmox/main/install/$var_install.sh)" || exit
