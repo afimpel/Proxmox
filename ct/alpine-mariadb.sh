@@ -54,16 +54,6 @@ function default_settings() {
   echo_default
 }
 
-function update_script() {
-header_info
-if [[ ! -f /etc/apt/sources.list.d/mariadb.list ]]; then msg_error "No ${APP} Installation Found!"; exit; fi
-msg_info "Updating ${APP} LXC"
-apt-get update &>/dev/null
-apt-get -y upgrade &>/dev/null
-msg_ok "Updated Successfully"
-exit
-}
-
 start
 build_container
 description
