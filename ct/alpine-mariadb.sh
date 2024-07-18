@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source <(curl -s https://raw.githubusercontent.com/afimpel/Proxmox/main/misc/build-afimpel.func)
+source <(curl -s https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/build-afimpel.func)
 # Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
