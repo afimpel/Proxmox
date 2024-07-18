@@ -1,4 +1,4 @@
-revision_code="20240718-8.1"
+revision_code="20240718-8.2"
 extraData=""
 DB_PASS=""
 variables() {
@@ -572,7 +572,7 @@ build_container() {
   export PCT_OPTIONS="
     -features $FEATURES
     -hostname $HN
-    -tags proxmox-helper-scripts,afimpelelnerd,${APP,,}
+    -tags afimpelelnerd,${APP,,}
     $SD
     $NS
     -net0 name=eth0,bridge=$BRG$MAC,ip=$NET$GATE$VLAN$MTU
@@ -653,6 +653,7 @@ description() {
   
   ${extraData}
 
+  fork to: proxmox-helper-scripts
   </div>"
   if [[ -f /etc/systemd/system/ping-instances.service ]]; then
     systemctl start ping-instances.service
