@@ -60,7 +60,7 @@ function update_script() {
   fi
   while true; do
     CHOICE=$(
-      whiptail --backtitle "Proxmox VE Helper Scripts ($revision_code)" --title "SUPPORT" --menu "Select option" 11 58 1 \
+      whiptail --backtitle "Proxmox VE Helper Scripts by afimpel" --title "SUPPORT" --menu "Select option" 11 58 1 \
         "1" "Check for Docker Updates" 3>&2 2>&1 1>&3
     )
     exit_status=$?
