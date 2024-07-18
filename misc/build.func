@@ -1,5 +1,6 @@
-revision_code="20240713-8.1"
-extraData=""  
+revision_code="20240718-8.1"
+extraData=""
+DB_PASS=""
 variables() {
   NSAPP=$(echo ${APP,,} | tr -d ' ')               # This function sets the NSAPP variable by converting the value of the APP variable to lowercase and removing any spaces.
   var_install="${var_install:-$NSAPP}-install"     # sets the var_install variable by appending "-install" to the value of NSAPP.
@@ -243,6 +244,7 @@ advanced_settings() {
           if PW2=$(whiptail --backtitle "Proxmox VE Helper Scripts" --passwordbox "\nVerify Root Password" 9 58 --title "PASSWORD VERIFICATION" 3>&1 1>&2 2>&3); then
             if [[ "$PW1" == "$PW2" ]]; then
               PW="-password $PW1"
+              DB_PASS="$PW1"
               echo -e "${DGN}Using Root Password: ${BGN}********${CL}"
               break
             else
@@ -255,6 +257,7 @@ advanced_settings() {
       else
         PW1="Automatic Login"
         PW=""
+        DB_PASS="root"
         echo -e "${DGN}Using Root Password: ${BGN}$PW1${CL}"
         break
       fi
@@ -542,9 +545,9 @@ build_container() {
   TEMP_DIR=$(mktemp -d)
   pushd $TEMP_DIR >/dev/null
   if [ "$var_os" == "alpine" ]; then
-    export FUNCTIONS_FILE_PATH="$(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/alpine-install.func)"
+    export FUNCTIONS_FILE_PATH="$(curl -s https://raw.githubusercontent.com/afimpel/Proxmox/main/misc/alpine-install.func)"
   else
-    export FUNCTIONS_FILE_PATH="$(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/install.func)"
+    export FUNCTIONS_FILE_PATH="$(curl -s https://raw.githubusercontent.com/afimpel/Proxmox/main/misc/install.func)"
   fi
   export CACHER="$APT_CACHER"
   export CACHER_IP="$APT_CACHER_IP"
@@ -575,7 +578,7 @@ build_container() {
     $PW
   "
   # This executes create_lxc.sh and creates the container and .conf file
-  bash -c "$(wget -qLO - https://raw.githubusercontent.com/tteck/Proxmox/main/ct/create_lxc.sh)" || exit
+  bash -c "$(wget -qLO - https://raw.githubusercontent.com/afimpel/Proxmox/main/ct/create_lxc.sh)" || exit
 
   LXC_CONFIG=/etc/pve/lxc/${CTID}.conf
   if [ "$CT_TYPE" == "0" ]; then
@@ -628,7 +631,7 @@ upgrade-system-reboot
 #    pct reboot "$CTID"
   fi
   echo -e "${DGN}pct exec: ${BGN}bash $var_install.sh${CL}"
-  lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://raw.githubusercontent.com/tteck/Proxmox/main/install/$var_install.sh)" || exit
+  lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://raw.githubusercontent.com/afimpel/Proxmox/main/install/$var_install.sh)" || exit
 
 }
 
@@ -637,11 +640,13 @@ description() {
   IP=$(pct exec "$CTID" ip a s dev eth0 | awk '/inet / {print $2}' | cut -d/ -f1)
   pct set "$CTID" -description "<div align='center'>
   Revision code: $revision_code
-  <hr />
-  <a href='https://nerd.afimpel.com' target='_blank' rel='noopener noreferrer'><img src='https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/images/afimpelelnerd.png?size=128'/></a>
-  <hr />
+  
   # ${APP} LXC
+  
+  <a href='https://nerd.afimpel.com' target='_blank' rel='noopener noreferrer'><img src='https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/images/afimpelelnerd.png?size=128'/></a>
+  
   ${extraData}
+
   </div>"
   if [[ -f /etc/systemd/system/ping-instances.service ]]; then
     systemctl start ping-instances.service
