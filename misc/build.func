@@ -544,8 +544,9 @@ build_container() {
   if [ $(( RAM_SIZE * 1 )) -lt 1025 ]; then
       SWAP_SIZE=1537;
   else
-      SWAP_SIZE=$(( RAM_SIZE * 1.5 ))
+      SWAP_SIZE=$(( ( RAM_SIZE * 150 ) / 100 ))
   fi
+  echo -e "${DGN}Allocated SWAP: ${BGN}$SWAP_SIZE${CL}"
 
   TEMP_DIR=$(mktemp -d)
   pushd $TEMP_DIR >/dev/null
