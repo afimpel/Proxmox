@@ -6,6 +6,7 @@
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
 source /dev/stdin <<< "$FUNCTIONS_FILE_PATH"
 
+msg_info "MySQL Password: $DB_PASS"
 color
 verb_ip6
 catch_errors
@@ -25,11 +26,10 @@ msg_ok "Installed Dependencies"
 msg_info "Installing mariadb"
 $STD apk add mariadb mariadb-client mariadb-server-utils
 $STD mysql_install_db --user=mysql --datadir=/var/lib/mysql
-sed -i 's/^# *\(port *=.*\)/\1/' /etc/mysql/my.cnf
-sed -i 's/^bind-address/#bind-address/g' /etc/mysql/mariadb.conf.d/50-server.cnf
+$STD sed -i 's/^# *\(port *=.*\)/\1/' /etc/my.cnf
+$STD sed -i 's/^bind-address/#bind-address/g' /etc/my.cnf.d/mariadb-server.cnf 
 $STD rc-service mariadb start
 $STD rc-update add mariadb default
-msg_info "MySQL Password: $DB_PASS"
 
 mariadb -uroot -p"$DB_PASS" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '$DB_PASS' WITH GRANT OPTION;
  DELETE FROM mysql.user WHERE User='';
