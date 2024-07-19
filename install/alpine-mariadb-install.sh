@@ -27,6 +27,7 @@ $STD apk add mariadb mariadb-client mariadb-server-utils
 $STD mysql_install_db --user=mysql --datadir=/var/lib/mysql
 $STD sed -i 's/^port/#port/g' /etc/my.cnf
 $STD sed -i 's/^port/#port/g' /etc/my.cnf.d/mariadb-server.cnf
+$STD sed -i 's/^skip-networking/#skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
 $STD sed -i '/\[mysqld\]/a\port=3306' /etc/my.cnf.d/mariadb-server.cnf
 $STD sed -i "s|.*bind-address\s*=.*|bind-address=0.0.0.0|g" /etc/my.cnf.d/mariadb-server.cnf
 $STD rc-service mariadb start
