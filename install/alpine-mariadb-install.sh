@@ -42,10 +42,9 @@ mariadb -uroot -p"$DB_PASS" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost
  FLUSH PRIVILEGES;
  SELECT User, Host FROM mysql.user"
 
-echo -e "\n\n${DGN}MariaDB Password: \t\t${BGN}$DB_PASS${CL}"
-ipaddr=$(/sbin/ip -4 -o addr show | grep 'inet ' | grep -v '127.0.0.1')
-ipaddr=$(echo $ipaddr | awk '{print "🖧\t\t" $4 }')
-echo -e "${DGN}IP Address: ${BGN}$ipaddr${CL}\n\n"
+echo -e "\n${DGN}🗝\t MariaDB Password: \t\t${GN}root${CL} => ${GN}$DB_PASS${CL}"
+ipaddr=$(/sbin/ip -4 -o addr show | awk '/inet / {print $4}' | cut -d/ -f1 | grep -v '127.0.0.1')
+echo -e "${DGN}🖧\t IP Address: ${GN}\t\t\t$ipaddr${CL}\n"
 msg_ok "Installed mariadb"
 
 motd_ssh
