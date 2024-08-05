@@ -2,27 +2,28 @@
 source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
 # Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
+# Co-Author: remz1337
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
 
 function header_info {
 clear
 cat <<"EOF"
-    __ __                __            __  
-   / //_/__  __  _______/ /___  ____ _/ /__
-  / ,< / _ \/ / / / ___/ / __ \/ __  / //_/
- / /| /  __/ /_/ / /__/ / /_/ / /_/ / ,<   
-/_/ |_\___/\__, /\___/_/\____/\__,_/_/|_|  
-          /____/                           
-
+    ____    __          
+   / / /___/ /___ _____ 
+  / / / __  / __ `/ __ \
+ / / / /_/ / /_/ / /_/ /
+/_/_/\__,_/\__,_/ .___/ 
+               /_/      
+ 
 EOF
 }
 header_info
 echo -e "Loading..."
-APP="Keycloak"
+APP="lldap"
 var_disk="4"
-var_cpu="2"
-var_ram="2048"
+var_cpu="1"
+var_ram="512"
 var_os="debian"
 var_version="12"
 variables
@@ -55,11 +56,11 @@ function default_settings() {
 
 function update_script() {
 header_info
-if [[ ! -f /etc/systemd/system/keycloak.service ]]; then msg_error "No ${APP} Installation Found!"; exit; fi
-msg_info "Updating ${APP} LXC"
-apt-get update &>/dev/null
-apt-get -y upgrade &>/dev/null
-msg_ok "Updated Successfully"
+if [[ ! -f /etc/systemd/system/lldap.service ]]; then msg_error "No ${APP} Installation Found!"; exit; fi
+msg_info "Updating $APP"
+apt update
+apt upgrade -y lldap
+msg_ok "Updated $APP"
 exit
 }
 
@@ -69,4 +70,4 @@ description
 
 msg_ok "Completed Successfully!\n"
 echo -e "${APP} should be reachable by going to the following URL.
-         ${BL}http://${IP}:8080/admin${CL} \n"
+         ${BL}http://${IP}:17170${CL} \n"
