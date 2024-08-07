@@ -30,6 +30,9 @@ $STD sed -i 's/^port/#port/g' /etc/my.cnf.d/mariadb-server.cnf
 $STD sed -i 's/^skip-networking/#skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
 $STD sed -i '/\[mysqld\]/a\port=3306' /etc/my.cnf.d/mariadb-server.cnf
 $STD sed -i "s|.*bind-address\s*=.*|bind-address=0.0.0.0|g" /etc/my.cnf.d/mariadb-server.cnf
+$STD echo '#!/bin/bash' > /root/mariadb-root
+$STD echo -e "\necho -e \"\nMariaDB ------------------------------------------------------------------------------------------------\"\nmariadb --version\necho -e \"--------------------------------------------------------------------------------------------------------\n\"\n\nmariadb -uroot -p$DB_PASS mysql" >> /root/mariadb-root
+$STD chmod 777 /root/mariadb-root
 $STD rc-service mariadb start
 $STD rc-update add mariadb default
 
