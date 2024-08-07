@@ -71,13 +71,18 @@ On_IPurple='\e[0;105m'  # Purple
 On_ICyan='\e[0;106m'    # Cyan
 On_IWhite='\e[0;107m'   # White
 
+packageUpdate0=$(apk update && apk version | grep -c "^[^<]")
+packageUpdate0=$( echo $packageUpdate0 | rev | cut -d' ' -f1 | rev )
+packageUpdate=$((( $packageUpdate0 * 1 ) - 1))
+
 ipaddr=$(ip addr show | awk '/inet / {print $2}' | cut -d/ -f1 | grep -v '127.0.0.1')
 ver=$(grep PRETTY_NAME /etc/os-release  | cut -d '"' -f 2);
 
 echo -e "${Color_Off}------------------------${IYellow}--------------------------------------------------------${Color_Off}\n";
-echo -e "${BWhite}🐧 \tSystem: ${IYellow}\t$ver${Color_Off}"
-echo -e "${BWhite}🐧 \tKernel: ${IYellow}\t$(uname -r)${Color_Off} of ${IYellow}$(uname -m)${Color_Off}"
-echo -e "${BWhite}🖧 \tIP Address: ${IYellow}\t$ipaddr${Color_Off}\n"
+echo -e "${BWhite}🐧 \tSystem : ${IYellow}\t$ver${Color_Off}"
+echo -e "${BWhite}🐧 \tUpadate : ${IYellow}\t${packageUpdate} packages${Color_Off}";
+echo -e "${BWhite}🐧 \tKernel : ${IYellow}\t$(uname -r)${Color_Off} of ${IYellow}$(uname -m)${Color_Off}"
+echo -e "${BWhite}🖧 \tIP Address : ${IYellow}\t$ipaddr${Color_Off}\n"
 echo -e "${Color_Off}------------------------${IYellow}--------------------------------------------------------${IGreen}\n";
 /bin/netstat -lnt
 echo -e "\n${Color_Off}------------------------${IYellow}--------------------------------------------------------${Color_Off}";
