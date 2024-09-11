@@ -82,6 +82,7 @@ echo -e "${Color_Off}------------------------${IYellow}-------------------------
 echo -e "${BWhite}🐧 \tSystem : ${IYellow}\t$ver${Color_Off}"
 echo -e "${BWhite}🐧 \tUpadate : ${IYellow}\t${packageUpdate} packages${Color_Off}";
 echo -e "${BWhite}🐧 \tKernel : ${IYellow}\t$(uname -r)${Color_Off} of ${IYellow}$(uname -m)${Color_Off}"
+echo -e "${BWhite}🐧 \tdateTime : ${IYellow}\t$(date +'%A, %d de %B del %Y | %H:%M:%S ( 00%u )')${Color_Off}"
 echo -e "${BWhite}🖧 \tIP Address : ${IYellow}\t$ipaddr${Color_Off}\n"
 echo -e "${Color_Off}------------------------${IYellow}--------------------------------------------------------${IGreen}\n";
 /bin/netstat -lnt
