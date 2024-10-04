@@ -71,20 +71,68 @@ On_IPurple='\e[0;105m'  # Purple
 On_ICyan='\e[0;106m'    # Cyan
 On_IWhite='\e[0;107m'   # White
 
-packageUpdate0=$(apk update && apk version | grep -c "^[^<]")
+R1 () {
+    data=$(completeLine "$2" "$5" 1);
+    printf " ${3}$4${NC}$1 $data ${3}$4${NC}\n${NC}"
+}
+
+CUSTOM () {
+    data=$(completeLine "$2" "$7" 3 "$4" $9);
+    printf " ${5}$6${NC}$1 $2$3 $data ${5}$8${NC}\n${NC}"
+}
+
+L1 () {
+    data=$(completeLine "$2" "$5" 2);
+    printf " ${3}$4${NC}$1 $data ${3}$4${NC}\n${NC}"
+}
+
+completeLine() {
+    if [ "$3" == '3' ]; then
+        menos=$(( 8 + $5 ))
+    else
+        menos=7
+    fi
+    local input_string="$1$4"
+    local input_string0="$1"
+    local input_string1="$4"
+    local total_length=$(tput cols)-$menos
+    local input_length=${#input_string}
+    local num_dots=$((total_length - input_length))
+
+    if [ $num_dots -lt 0 ]; then
+        num_dots=1
+    fi
+
+    local output_string=""
+    for ((i=0; i<num_dots; i++)); do
+        output_string+="$2"
+    done
+    if [ "$3" == '3' ]; then
+        echo "$output_string $input_string1"
+    elif [ "$3" == '0' ]; then
+        echo "$input_string0 $output_string $input_string1"
+    elif [ "$3" == '1' ]; then
+        echo "$input_string $output_string"
+    else
+        echo "$output_string $input_string"
+    fi
+}
+
+## packageUpdate0=$(apk update && apk version | grep -c "^[^<]")
+packageUpdate0=$(/usr/bin/package-update)
 packageUpdate0=$( echo $packageUpdate0 | rev | cut -d' ' -f1 | rev )
 packageUpdate=$((( $packageUpdate0 * 1 ) - 1))
 
 ipaddr=$(ip addr show | awk '/inet / {print $2}' | cut -d/ -f1 | grep -v '127.0.0.1')
 ver=$(grep PRETTY_NAME /etc/os-release  | cut -d '"' -f 2);
 
-echo -e "${Color_Off}------------------------${IYellow}--------------------------------------------------------${Color_Off}\n";
+CUSTOM $IYellow "$ver" $IGreen "$ipaddr" $BWhite "☑" "." "☑" 0
 echo -e "${BWhite}🐧 \tSystem : ${IYellow}\t$ver${Color_Off}"
 echo -e "${BWhite}🐧 \tUpadate : ${IYellow}\t${packageUpdate} packages${Color_Off}";
 echo -e "${BWhite}🐧 \tKernel : ${IYellow}\t$(uname -r)${Color_Off} of ${IYellow}$(uname -m)${Color_Off}"
 echo -e "${BWhite}🐧 \tdateTime : ${IYellow}\t$(date +'%A, %d de %B del %Y | %H:%M:%S ( 00%u )')${Color_Off}"
 echo -e "${BWhite}🖧 \tIP Address : ${IYellow}\t$ipaddr${Color_Off}\n"
-echo -e "${Color_Off}------------------------${IYellow}--------------------------------------------------------${IGreen}\n";
+L1 $LIGHT_GREEN $(date) $WHITE '✔' "."
 /bin/netstat -lnt
-echo -e "\n${Color_Off}------------------------${IYellow}--------------------------------------------------------${Color_Off}";
+L1 $LIGHT_GREEN $(uptime) $WHITE '✔' "."
 
