@@ -135,3 +135,4 @@ echo -e "${BWhite}🖧 \tIP Address : ${IYellow}\t$ipaddr${Color_Off}"
 L1 $IGreen "$(date)" $BWhite '✔' "."
 /bin/netstat -lnt
 L1 $IGreen "$(uptime)" $BWhite '✔' "."
+echo -e " ${Color_Off}"
