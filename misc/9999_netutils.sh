@@ -121,7 +121,7 @@ completeLine() {
 ## packageUpdate0=$(apk update && apk version | grep -c "^[^<]")
 packageUpdate0=$(/usr/bin/package-update)
 packageUpdate0=$( echo $packageUpdate0 | rev | cut -d' ' -f1 | rev )
-packageUpdate=$((( $packageUpdate0 * 1 ) - 1))
+packageUpdate=$((( $packageUpdate0 * 1 )))
 
 ipaddr=$(ip addr show | awk '/inet / {print $2}' | cut -d/ -f1 | grep -v '127.0.0.1')
 ver=$(grep PRETTY_NAME /etc/os-release  | cut -d '"' -f 2);
