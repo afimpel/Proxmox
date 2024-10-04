@@ -132,7 +132,6 @@ echo -e "${BWhite}🐧 \tUpadate : ${IYellow}\t${packageUpdate} packages${Color_
 echo -e "${BWhite}🐧 \tKernel : ${IYellow}\t$(uname -r)${Color_Off} of ${IYellow}$(uname -m)${Color_Off}"
 echo -e "${BWhite}🐧 \tdateTime : ${IYellow}\t$(date +'%A, %d de %B del %Y | %H:%M:%S ( 00%u )')${Color_Off}"
 echo -e "${BWhite}🖧 \tIP Address : ${IYellow}\t$ipaddr${Color_Off}\n"
-L1 $LIGHT_GREEN "$(date)" $WHITE '✔' "."
+L1 $IGreen "$(date)" $BWhite '✔' "."
 /bin/netstat -lnt
-L1 $LIGHT_GREEN "$(uptime)" $WHITE '✔' "."
-
+L1 $IGreen "$(uptime)" $BWhite '✔' "."
