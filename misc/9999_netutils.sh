@@ -125,7 +125,7 @@ packageUpdate=$((( $packageUpdate0 * 1 )))
 
 ipaddr=$(ip addr show | awk '/inet / {print $2}' | cut -d/ -f1 | grep -v '127.0.0.1')
 ver=$(grep PRETTY_NAME /etc/os-release  | cut -d '"' -f 2);
-
+clear
 CUSTOM $IYellow "$ver" $IGreen "$ipaddr" $BWhite "☑" "." "☑" 0
 echo -e "${BWhite}🐧 \tSystem : ${IYellow}\t$ver${Color_Off}"
 echo -e "${BWhite}🐧 \tUpadate : ${IYellow}\t${packageUpdate} packages${Color_Off}";
