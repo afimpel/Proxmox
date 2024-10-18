@@ -625,7 +625,7 @@ http://dl-cdn.alpinelinux.org/alpine/edge/testing
 EOF'
     pct exec "$CTID" -- ash -c "apk update"
     pct exec "$CTID" -- ash -c "apk upgrade"
-    pct exec "$CTID" -- ash -c "apk add --no-cache nano lsd git mc bash htop curl btop lsblk bash-completion lsb-release-minimal openssl jq fastfetch"
+    pct exec "$CTID" -- ash -c "apk add --no-cache nano lsd git mc bash htop curl btop lsblk bash-completion lsb-release-minimal openssl jq fastfetch ncurses"
     pct exec "$CTID" -- ash -c "wget --no-cache -O /etc/profile.d/9999_netutils.sh https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/9999_netutils.sh"
     pct exec "$CTID" -- ash -c "wget --no-cache -O /usr/bin/package-update https://raw.githubusercontent.com/afimpel/upgrade-system-alpine/main/package-update && wget --no-cache -O /usr/bin/upgrade-system https://raw.githubusercontent.com/afimpel/upgrade-system-alpine/main/upgrade-system && wget --no-cache -O /usr/bin/upgrade-system-poweroff https://raw.githubusercontent.com/afimpel/upgrade-system-alpine/main/upgrade-system-poweroff && wget --no-cache -O /usr/bin/upgrade-system-reboot https://raw.githubusercontent.com/afimpel/upgrade-system-alpine/main/upgrade-system-reboot"
 
@@ -643,7 +643,6 @@ upgrade-system-reboot
   fi
   echo -e "${DGN}pct exec: ${BGN}bash $var_install.sh${CL}"
   lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://raw.githubusercontent.com/afimpel/Proxmox/master/install/$var_install.sh)" || exit
-
 }
 
 # This function sets the description of the container.
@@ -652,10 +651,13 @@ description() {
   pct set "$CTID" -description "<div align='center'>
   Revision code: $revision_code
   
+  <div style='display: flex;'>
+  <a style='margin: auto;' href='https://nerd.afimpel.com' target='_blank' rel='noopener noreferrer'><img src='https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/images/afimpelelnerd.png?size=128'/></a>
+  <a style='margin: auto;' href='https://Helper-Scripts.com' target='_blank' rel='noopener noreferrer'><img src='https://raw.githubusercontent.com/tteck/Proxmox/main/misc/images/logo-81x112.png'/></a>
+  </div>
+
   # ${APP} LXC
-  
-  <a href='https://nerd.afimpel.com' target='_blank' rel='noopener noreferrer'><img src='https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/images/afimpelelnerd.png?size=128'/></a>
-  
+
   ${extraData}
 
   fork to: proxmox-helper-scripts
