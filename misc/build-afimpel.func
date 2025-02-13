@@ -644,8 +644,7 @@ upgrade-system-reboot
   fi
   if [ "$var_os" == "debian" ]; then
     sleep 3
-    ### https://raw.githubusercontent.com/afimpel/upgrade-system-debian/refs/heads/main/package-update
-    pct exec "$CTID" -- /bin/sh -c 'cat <<EOF >/etc/apk/repositories
+    pct exec "$CTID" -- /bin/sh -c 'cat <<EOF >/etc/apt/source.list
 deb http://deb.debian.org/debian testing main contrib non-free non-free-firmware
 deb http://deb.debian.org/debian-security/ testing-security main contrib non-free non-free-firmware
 deb http://deb.debian.org/debian testing-updates main contrib non-free non-free-firmware
