@@ -671,6 +671,16 @@ upgrade-system-reboot
   pct exec "$CTID" -- sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   pct exec "$CTID" -- sh -c "sed -i 's/robbyrussell/philips/g' ~/.zshrc"
   pct exec "$CTID" -- sh -c "sed -i 's/\. \$i/bash \$i/g' /etc/profile"
+  pct exec "$CTID" -- sh -c "echo 'root: $DB_PASS' > ~/.pass "
+  if [[ -f ~/.ssh/authorized_keys ]]; then
+    msg_info "SSH authorized"
+    authorized_ssh=$(cat ~/.ssh/authorized_keys);
+    pct exec "$CTID" -- sh -c "mkdir ~/.ssh"
+    pct exec "$CTID" -- sh -c "echo '$authorized_ssh' > ~/.ssh/authorized_keys"
+    pct exec "$CTID" -- sh -c "mkdir /home/proxmox/.ssh"
+    pct exec "$CTID" -- sh -c "echo '$authorized_ssh' > /home/proxmox/.ssh/authorized_keys"
+    pct exec "$CTID" -- sh -c "chown proxmox:proxmox /home/proxmox/.ssh/authorized_keys"
+  fi
   echo -e "${DGN}pct exec: ${BGN}bash $var_install.sh${CL}"
   lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://raw.githubusercontent.com/afimpel/Proxmox/master/install/$var_install.sh)" || exit
 }
