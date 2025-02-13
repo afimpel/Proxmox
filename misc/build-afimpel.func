@@ -634,7 +634,7 @@ EOF'
     pct exec "$CTID" -- ash -c "chmod 777 /usr/bin/package-update -R"
     pct exec "$CTID" -- ash -c "mv /etc/profile.d/color_prompt.sh.disabled /etc/profile.d/color_prompt.sh"
     pct exec "$CTID" -- ash -c "sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd"
-    pct exec "$CTID" -- ash -c "adduser -m -s /bin/bash proxmox"
+    pct exec "$CTID" -- ash -c "adduser -D -s /bin/bash proxmox"
     extraData='```sh
 package-update
 upgrade-system
