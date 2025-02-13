@@ -634,6 +634,7 @@ EOF'
     pct exec "$CTID" -- ash -c "chmod 777 /usr/bin/package-update -R"
     pct exec "$CTID" -- ash -c "mv /etc/profile.d/color_prompt.sh.disabled /etc/profile.d/color_prompt.sh"
     pct exec "$CTID" -- ash -c "sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd"
+    pct exec "$CTID" -- ash -c "adduser -m -s /bin/bash proxmox"
     extraData='```sh
 package-update
 upgrade-system
@@ -658,6 +659,7 @@ EOF'
     pct exec "$CTID" -- bash -c "chmod 777 /usr/bin/upgrade-system* -R"
     pct exec "$CTID" -- bash -c "chmod 777 /usr/bin/package-update -R"
     pct exec "$CTID" -- bash -c "sed -i 's/\/bin\/bash/\/bin\/zsh/g' /etc/passwd"
+    pct exec "$CTID" -- bash -c "useradd -m -s /bin/bash proxmox"
     extraData='```sh
 package-update
 upgrade-system
@@ -666,7 +668,6 @@ upgrade-system-reboot
 ```'
 #    pct reboot "$CTID"
   fi
-  pct exec "$CTID" -- bash -c "useradd -m -s /bin/bash proxmox"
   pct exec "$CTID" -- sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   pct exec "$CTID" -- sh -c "sed -i 's/robbyrussell/philips/g' ~/.zshrc"
   pct exec "$CTID" -- sh -c "sed -i 's/\. \$i/bash \$i/g' /etc/profile"
