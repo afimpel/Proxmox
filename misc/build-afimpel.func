@@ -612,7 +612,7 @@ lxc.mount.entry: /dev/dri/renderD128 dev/dri/renderD128 none bind,optional,creat
 
 EOF
   fi
-
+  printenv > ~/env-${PCT_OSTYPE}-${CTID}.log
   # This starts the container and executes <app>-install.sh
   msg_info "Starting LXC Container"
   pct start "$CTID"
