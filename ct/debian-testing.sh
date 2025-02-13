@@ -22,9 +22,9 @@ header_info
 echo -e "Loading..."
 APP="Debian-testing"
 var_install="debian"
-var_disk="16"
+var_disk="32"
 var_cpu="2"
-var_ram="2048"
+var_ram="4096"
 var_os="debian"
 var_version="12"
 variables
@@ -32,7 +32,7 @@ color
 catch_errors
 
 function default_settings() {
-  CT_TYPE="1"
+  CT_TYPE="0"
   PW=""
   CT_ID=$NEXTID
   HN=$NSAPP
@@ -50,7 +50,7 @@ function default_settings() {
   NS=""
   MAC=""
   VLAN=""
-  SSH="no"
+  SSH="yes"
   VERB="no"
   echo_default
 }
