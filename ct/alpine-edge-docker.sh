@@ -25,7 +25,7 @@ var_disk="16"
 var_cpu="2"
 var_ram="2048"
 var_os="alpine"
-var_version="3.19"
+var_version="3.21"
 variables
 color
 catch_errors

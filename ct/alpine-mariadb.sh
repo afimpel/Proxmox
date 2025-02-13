@@ -24,7 +24,7 @@ var_disk="16"
 var_cpu="1"
 var_ram="1024"
 var_os="alpine"
-var_version="3.19"
+var_version="3.21"
 
 variables
 color

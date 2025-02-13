@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+#source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
 source <(curl -H 'Pragma: no-cache' -s https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/build-afimpel.func)
+
 # Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
@@ -8,31 +10,30 @@ source <(curl -H 'Pragma: no-cache' -s https://raw.githubusercontent.com/afimpel
 function header_info {
 clear
 cat <<"EOF"
-    ___    __      _          
-   /   |  / /___  (_)___  ___ 
-  / /| | / / __ \/ / __ \/ _ \
- / ___ |/ / /_/ / / / / /  __/
-/_/  |_/_/ .___/_/_/ /_/\___/ 
-        /_/                   
-Edge
+    ____       __    _           
+   / __ \___  / /_  (_)___  ____ 
+  / / / / _ \/ __ \/ / __ `/ __ \
+ / /_/ /  __/ /_/ / / /_/ / / / /
+/_____/\___/_.___/_/\__,_/_/ /_/ 
+TESTING                                 
 EOF
 }
 header_info
 echo -e "Loading..."
-APP="Alpine-Edge"
-var_install="alpine"
-var_disk="8"
-var_cpu="1"
+APP="Debian-testing"
+var_install="debian"
+var_disk="16"
+var_cpu="2"
 var_ram="2048"
-var_os="alpine"
-var_version="3.21"
+var_os="debian"
+var_version="12"
 variables
 color
 catch_errors
 
 function default_settings() {
   CT_TYPE="1"
-  PW="-password alpine"
+  PW=""
   CT_ID=$NEXTID
   HN=$NSAPP
   DISK_SIZE="$var_disk"
@@ -43,7 +44,7 @@ function default_settings() {
   GATE=""
   APT_CACHER=""
   APT_CACHER_IP=""
-  DISABLEIP6="no"
+  DISABLEIP6="yes"
   MTU=""
   SD=""
   NS=""
@@ -55,15 +56,13 @@ function default_settings() {
 }
 
 function update_script() {
-UPD=$(whiptail --backtitle "Proxmox VE Helper Scripts by afimpel" --title "SUPPORT" --radiolist --cancel-button Exit-Script "Spacebar = Select" 11 58 1 \
-  "1" "Check for Alpine Updates" ON \
-  3>&1 1>&2 2>&3)
-
 header_info
-if [ "$UPD" == "1" ]; then
-apk update && apk upgrade
-exit;
-fi
+if [[ ! -d /var ]]; then msg_error "No ${APP} Installation Found!"; exit; fi
+msg_info "Updating $APP LXC"
+apt-get update &>/dev/null
+apt-get -y upgrade &>/dev/null
+msg_ok "Updated $APP LXC"
+exit
 }
 
 start

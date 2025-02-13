@@ -1,4 +1,5 @@
-revision_code="20240718-8.2"
+#!/usr/bin/env bash
+revision_code="20250213-8.2"
 extraData=""
 DB_PASS=""
 variables() {
@@ -544,7 +545,7 @@ build_container() {
   if [ $(( RAM_SIZE * 1 )) -lt 1025 ]; then
       SWAP_SIZE=1537;
   else
-      SWAP_SIZE=$(( ( RAM_SIZE * 150 ) / 100 ))
+      SWAP_SIZE=$(( ( RAM_SIZE * 175 ) / 100 ))
   fi
   echo -e "${DGN}Allocated SWAP: ${BGN}$SWAP_SIZE${CL}"
 
@@ -641,6 +642,32 @@ upgrade-system-reboot
 ```'
 #    pct reboot "$CTID"
   fi
+  if [ "$var_os" == "debian" ]; then
+    sleep 3
+    ### https://raw.githubusercontent.com/afimpel/upgrade-system-debian/refs/heads/main/package-update
+    pct exec "$CTID" -- /bin/sh -c 'cat <<EOF >/etc/apk/repositories
+deb http://deb.debian.org/debian testing main contrib non-free non-free-firmware
+deb http://deb.debian.org/debian-security/ testing-security main contrib non-free non-free-firmware
+deb http://deb.debian.org/debian testing-updates main contrib non-free non-free-firmware
+EOF'
+    pct exec "$CTID" -- bash -c "apt update"
+    pct exec "$CTID" -- bash -c "apt upgrade -y"
+    pct exec "$CTID" -- bash -c "apt install -y nano zsh lsd git curl btop bash-completion zsh-completion lsb-release-minimal openssl jq neofetch"
+    pct exec "$CTID" -- bash -c "wget --no-cache -O /etc/profile.d/9999_netutils.sh https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/9999_netutils.sh"
+    pct exec "$CTID" -- bash -c "wget --no-cache -O /usr/bin/package-update https://raw.githubusercontent.com/afimpel/upgrade-system-debian/package-update && wget --no-cache -O /usr/bin/upgrade-system https://raw.githubusercontent.com/afimpel/upgrade-system-debian/upgrade-system && wget --no-cache -O /usr/bin/upgrade-system-poweroff https://raw.githubusercontent.com/afimpel/upgrade-system-debian/upgrade-system-poweroff && wget --no-cache -O /usr/bin/upgrade-system-reboot https://raw.githubusercontent.com/afimpel/upgrade-system-debian/upgrade-system-reboot"
+
+    pct exec "$CTID" -- bash -c "chmod 777 /usr/bin/upgrade-system* -R"
+    pct exec "$CTID" -- bash -c "chmod 777 /usr/bin/package-update -R"
+    pct exec "$CTID" -- bash -c "sed -i 's/\/bin\/bash/\/bin\/zsh/g' /etc/passwd"
+    extraData='```sh
+package-update
+upgrade-system
+upgrade-system-poweroff
+upgrade-system-reboot
+```'
+#    pct reboot "$CTID"
+  fi
+  pct exec "$CTID" -- bash -c "useradd -m -s /bin/zsh proxmox"
   echo -e "${DGN}pct exec: ${BGN}bash $var_install.sh${CL}"
   lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://raw.githubusercontent.com/afimpel/Proxmox/master/install/$var_install.sh)" || exit
 }
@@ -653,7 +680,6 @@ description() {
   
   <div style='display: flex;'>
   <a style='margin: auto;' href='https://nerd.afimpel.com' target='_blank' rel='noopener noreferrer'><img src='https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/images/afimpelelnerd.png?size=128'/></a>
-  <a style='margin: auto;' href='https://Helper-Scripts.com' target='_blank' rel='noopener noreferrer'><img src='https://raw.githubusercontent.com/tteck/Proxmox/main/misc/images/logo-81x112.png'/></a>
   </div>
 
   # ${APP} LXC
@@ -665,5 +691,5 @@ description() {
   if [[ -f /etc/systemd/system/ping-instances.service ]]; then
     systemctl start ping-instances.service
   fi
-  pct exec "$CTID" -- ash -c "upgrade-system-reboot"
+  pct exec "$CTID" -- bash -c "upgrade-system-reboot"
 }
