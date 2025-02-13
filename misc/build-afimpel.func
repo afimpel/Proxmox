@@ -666,7 +666,7 @@ upgrade-system-reboot
 ```'
 #    pct reboot "$CTID"
   fi
-  pct exec "$CTID" -- bash -c "useradd -m -s /bin/zsh proxmox"
+  pct exec "$CTID" -- bash -c "useradd -m -s /bin/bash proxmox"
   pct exec "$CTID" -- sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   pct exec "$CTID" -- sh -c "sed -i 's/robbyrussell/philips/g' ~/.zshrc"
   pct exec "$CTID" -- sh -c "sed -i 's/\. \$i/bash \$i/g' /etc/profile"
