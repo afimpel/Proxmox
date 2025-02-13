@@ -668,7 +668,7 @@ upgrade-system-reboot
   fi
   pct exec "$CTID" -- bash -c "useradd -m -s /bin/zsh proxmox"
   pct exec "$CTID" -- sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  pct exec "$CTID" -- sh -c "sed -i 's/robbyrussell/tonotdo' ~/zshrc"
+  pct exec "$CTID" -- sh -c "sed -i 's/robbyrussell/philips/g' ~/.zshrc"
   pct exec "$CTID" -- sh -c "sed -i 's/\. \$i/bash \$i/g' /etc/profile"
   echo -e "${DGN}pct exec: ${BGN}bash $var_install.sh${CL}"
   lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://raw.githubusercontent.com/afimpel/Proxmox/master/install/$var_install.sh)" || exit
