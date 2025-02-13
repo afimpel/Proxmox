@@ -653,7 +653,7 @@ EOF'
     pct exec "$CTID" -- bash -c "apt upgrade -y"
     pct exec "$CTID" -- bash -c "apt install -y nano zsh lsd git curl btop bash-completion zsh-* openssl jq fastfetch"
     pct exec "$CTID" -- bash -c "wget --no-cache -O /etc/profile.d/9999_netutils.sh https://raw.githubusercontent.com/afimpel/Proxmox/master/misc/9999_netutils.sh"
-    pct exec "$CTID" -- bash -c "wget --no-cache -O /usr/bin/package-update https://raw.githubusercontent.com/afimpel/upgrade-system-debian/package-update && wget --no-cache -O /usr/bin/upgrade-system https://raw.githubusercontent.com/afimpel/upgrade-system-debian/upgrade-system && wget --no-cache -O /usr/bin/upgrade-system-poweroff https://raw.githubusercontent.com/afimpel/upgrade-system-debian/upgrade-system-poweroff && wget --no-cache -O /usr/bin/upgrade-system-reboot https://raw.githubusercontent.com/afimpel/upgrade-system-debian/upgrade-system-reboot"
+    pct exec "$CTID" -- bash -c "wget --no-cache -O /usr/bin/package-update https://raw.githubusercontent.com/afimpel/upgrade-system-debian/main/package-update && wget --no-cache -O /usr/bin/upgrade-system https://raw.githubusercontent.com/afimpel/upgrade-system-debian/main/upgrade-system && wget --no-cache -O /usr/bin/upgrade-system-poweroff https://raw.githubusercontent.com/afimpel/upgrade-system-debian/main/upgrade-system-poweroff && wget --no-cache -O /usr/bin/upgrade-system-reboot https://raw.githubusercontent.com/afimpel/upgrade-system-debian/main/upgrade-system-reboot"
 
     pct exec "$CTID" -- bash -c "chmod 777 /usr/bin/upgrade-system* -R"
     pct exec "$CTID" -- bash -c "chmod 777 /usr/bin/package-update -R"
