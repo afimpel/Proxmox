@@ -43,14 +43,14 @@ function default_settings() {
   GATE=""
   APT_CACHER=""
   APT_CACHER_IP=""
-  DISABLEIP6="no"
+  DISABLEIP6="yes"
   MTU=""
   SD=""
   NS=""
   MAC=""
   VLAN=""
-  SSH="no"
-  VERB="no"
+  SSH="yes"
+  VERB="yes"
   echo_default
 }
 
