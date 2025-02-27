@@ -674,9 +674,9 @@ upgrade-system-reboot
   if [[ -f ~/.ssh/authorized_keys ]]; then
     msg_info "SSH authorized"
     authorized_ssh=$(cat ~/.ssh/authorized_keys);
-    pct exec "$CTID" -- sh -c "mkdir ~/.ssh"
+    pct exec "$CTID" -- sh -c "mkdir -p ~/.ssh"
     pct exec "$CTID" -- sh -c "echo '$authorized_ssh' > ~/.ssh/authorized_keys"
-    pct exec "$CTID" -- sh -c "mkdir /home/proxmox/.ssh"
+    pct exec "$CTID" -- sh -c "mkdir -p /home/proxmox/.ssh"
     pct exec "$CTID" -- sh -c "echo '$authorized_ssh' > /home/proxmox/.ssh/authorized_keys"
     pct exec "$CTID" -- sh -c "chown proxmox:proxmox /home/proxmox/.ssh/authorized_keys"
   fi
