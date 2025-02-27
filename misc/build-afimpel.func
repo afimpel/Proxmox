@@ -655,6 +655,8 @@ deb http://deb.debian.org/debian-security/ testing-security main contrib non-fre
 deb http://deb.debian.org/debian testing-updates main contrib non-free non-free-firmware
 EOF'
     pct exec "$CTID" -- bash -c "upgrade-system"
+    pct exec "$CTID" -- bash -c "yes | dpkg --configure --pending"
+    pct exec "$CTID" -- bash -c "/usr/sbin/update-initramfs -u"
     pct exec "$CTID" -- bash -c "apt install -y nano zsh lsd git curl btop bash-completion zsh-* openssl jq fastfetch net-tools"
     pct exec "$CTID" -- bash -c "sed -i 's/\/bin\/bash/\/bin\/zsh/g' /etc/passwd"
     pct exec "$CTID" -- bash -c "useradd -m -s /bin/zsh proxmox"
