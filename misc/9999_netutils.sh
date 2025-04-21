@@ -119,7 +119,7 @@ completeLine() {
 }
 
 ## packageUpdate0=$(apk update && apk version | grep -c "^[^<]")
-packageUpdate0=$(/usr/bin/package-update)
+packageUpdate0=$(/usr/bin/package-update tty)
 packageUpdate0=$( echo $packageUpdate0 | rev | cut -d' ' -f2 | rev )
 packageUpdate=$((( $packageUpdate0 * 1 )))
 
