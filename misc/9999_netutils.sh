@@ -122,16 +122,23 @@ completeLine() {
 packageUpdate0=$(/usr/bin/package-update tty)
 packageUpdate0=$( echo $packageUpdate0 | rev | cut -d' ' -f2 | rev )
 packageUpdate=$((( $packageUpdate0 * 1 )))
+cputext=$(grep 'model name' /proc/cpuinfo | cut -d : -f 2 | tail -1 | sed 's/^[ \t]*//')
+nproc=$(grep -c cores /proc/cpuinfo)
+cpudata="$cputext ( ${BICyan}$(nproc)${BWhite} )";
 
 ipaddr=$(ip addr show | awk '/inet [0-9]/ && !/127.0.0.1/ {print $2}' | cut -d/ -f1 | paste -s -d '|' -)
 ver=$(grep PRETTY_NAME /etc/os-release  | cut -d '"' -f 2);
 clear
 CUSTOM $IYellow "$ver" $IGreen "$ipaddr" $BWhite "☑" "." "☑" 0
-echo -e "${BWhite}🐧 \tSystem : ${IYellow}\t$ver${Color_Off}"
-echo -e "${BWhite}🐧 \tUpadate : ${IYellow}\t${packageUpdate} packages${Color_Off}";
-echo -e "${BWhite}🐧 \tKernel : ${IYellow}\t$(uname -r)${Color_Off} of ${IYellow}$(uname -m)${Color_Off}"
-echo -e "${BWhite}🐧 \tdateTime : ${IYellow}\t$(date +'%A, %d de %B del %Y | %H:%M:%S ( 00%u )')${Color_Off}"
-echo -e "${BWhite}🐧 \tIP Address : ${IYellow}\t$ipaddr${Color_Off}"
+echo -e "${IGreen}🐧 \tCPU : ${BWhite}\t\t$cpudata${Color_Off}"
+echo -e "${IGreen}🐧 \tHardDrive : ${BWhite}\tTotal:${BICyan} $(df -h / | awk '/\/$/ {print $1}')${BWhite} ( Used:${BICyan} $(df -h / | awk '/\/$/ {print $2}')${BWhite} / Free:${BICyan} $(df -h / | awk '/\/$/ {print $3}')${BWhite} ) ${Color_Off}";
+echo -e "${IGreen}🐧 \tSystem : ${BWhite}\t$ver${Color_Off}"
+echo -e "${IGreen}🐧 \tHostname : ${BWhite}\t$(hostname)${Color_Off}"
+echo -e "${IGreen}🐧 \tUser : ${BWhite}\t\t$(whoami)${Color_Off}"
+echo -e "${IGreen}🐧 \tUpadate : ${BWhite}\t${packageUpdate} packages${Color_Off}";
+echo -e "${IGreen}🐧 \tKernel : ${BWhite}\t$(uname -r)${Color_Off} of ${BWhite}$(uname -m)${Color_Off}"
+echo -e "${IGreen}🐧 \tdateTime : ${BWhite}\t$(date +'%A, %d de %B del %Y | %H:%M:%S ( 00%u )')${Color_Off}"
+echo -e "${IGreen}🐧 \tIP Address : ${BWhite}\t$ipaddr${Color_Off}"
 L1 $IGreen "$(date)" $BWhite '✔' "."
 /bin/netstat -lnt
 L1 $IGreen "$(uptime)" $BWhite '✔' "."
